@@ -17,7 +17,7 @@ Here are a few resources I (Jon) find indispensable when working with Bayesian m
 <br>
 
 - [Probability Distribution Applet](https://homepage.divms.uiowa.edu/~mbognar/) 
-  + What does an Exponential Distribution with a $\lambda$ of 3 look like? How thick are the tails on a Student-$\T$ with a $\nu$ parameter of 4? Do I use a Poisson on Negative-Binomial Distribution for these count data? This applet makes visualizing continuous distributions really easy. There is a mobile app too.<br>
+  + What does an Exponential Distribution with a $\lambda$ of 3 look like? How thick are the tails on a Student- $T$ with a $\nu$ parameter of 4? Do I use a Poisson on Negative-Binomial Distribution for these count data? This applet makes visualizing continuous distributions really easy. There is a mobile app too.<br>
 <br>
 
 - [tidybayes](http://mjskay.github.io/tidybayes/articles/tidy-brms.html)
