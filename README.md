@@ -28,27 +28,4 @@ Here are a few resources I (Jon) find indispensable when working with Bayesian m
   + ***First place to check for any questions regarding Stan, brms, and Rethinking.*** Topics range from OS issues ("R not compiling my models properly") to conceptual topics to new features or methods.  
 
 
-## Weekly Breakdown of Book
-
-#### Week 1
-- Chapter 1 of *Statistical Rethinking* v2
-- 
-
-2) yes, worth going over. Sections 2.2 - 2.4 are really important. 
-    + Quadratic approximation, do we want to do this?
-
-3) sampling, yes, important, but short and can be combined. 
-    + mean, median, and mode of distributions. 
-    + posterior predictive checks
-
-4) definitely, intro to normal distribution
-
-
-
-
-
-
-
----
-
-
+## Weekly Breakdown in Schedule.qmd or Schedule.html files. 
