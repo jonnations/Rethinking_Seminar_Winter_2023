@@ -55,7 +55,7 @@ date: now
 - Rethinking: Chapter 14.1 - 14.4
 - Lectures: [Video 14](https://www.youtube.com/watch?v=XDoAglqd7ss&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=14), with Videos [15](https://www.youtube.com/watch?v=L_QumFUv7C8&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=15) and [16](https://www.youtube.com/watch?v=PIuqxOBJqLU&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=16) being optional (see notes below)
 - Rethinking in brms: Chapters [14.1 - 14.3](https://bookdown.org/content/4857/adventures-in-covariance.html#varying-slopes-by-construction) with 14.4 and 14.5 optional.
-- **Note**: Introduction to varying slopes models. Chapters 14.1-14.3 are very critical to learn. Chapter 14.4 is a case study on social networks (any anthropologists here?), and 14.5 is a study on 2 flavors of Gaussian processes, including geospatial modeling (correlations due to geographic proximity) and phylogenetic regression (correlations due to evolutionary proximity). If you have interest in any of these things, then definitely watch Videos 15 or 16, and read the book carefully. 
+- **Note**: Introduction to varying slopes models. Chapters 14.1-14.3 are very critical to learn. Chapter 14.4 is a case study on social networks (any anthropologists here?), and 14.5 is a study on 2 flavors of Gaussian processes, including geospatial modeling (correlations due to geographic proximity) and phylogenetic regression (correlations due to evolutionary proximity). If you have interest in any of these things, then definitely watch Videos 15 or 16, and read the book chapters (14.4 & 14.5) carefully. 
   
 #### **Week 9**
 - Rethinking: Chapter 15.1-15.2, and 17
