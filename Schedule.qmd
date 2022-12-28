@@ -1,0 +1,23 @@
+---
+title: "Schedule"
+author: "Jon Nations"
+format: html
+editor: visual
+date: now
+---
+
+## Schedule (Premilinary) for Rethinking Seminar - Winter 2023  
+
+# 8 Weeks of Classes
+
+-   **Week 1**
+    -   Intro to Course, R, and RStudio.
+-   **Week 2**
+    -   Rethinking: Chapters 1, 2, & 3
+    -   Lectures: [Video 1: The Golem of Prague](https://www.youtube.com/watch?v=cclUd_HoRlo&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=2) & [Video 2: Bayesian Inference](https://www.youtube.com/watch?v=guTdrfycW2Q&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=3)
+    - Rethinking in brms: Chapters [1](https://bookdown.org/content/4857/the-golem-of-prague.html), [2](https://bookdown.org/content/4857/small-worlds-and-large-worlds.html), and [3](https://bookdown.org/content/4857/sampling-the-imaginary.html). In addition to the book content, these chapters provides a good intro the tidyverse and brms. Rethinking uses Quadratic Approximation for the first few chapters (`rethinking::quap`function),  while brms only does full Bayesian sampling. Sections [2.4.3](https://bookdown.org/content/4857/small-worlds-and-large-worlds.html#grid-approximation.) to [2.4.5](https://bookdown.org/content/4857/small-worlds-and-large-worlds.html#markov-chain-monte-carlo.) demonstrates the differences, and section [3.4](https://bookdown.org/content/4857/sampling-the-imaginary.html#summary-lets-practice-with-brms) shows how it all works in brms.
+    
+- **Week 3**
+  - Rethinking: Chapter 4
+  - Lectures: [Video 3: Geocentric Models](https://www.youtube.com/watch?v=zYYBtxHWE0A), & [Video 4: Categories, Curves, and Splines](https://www.youtube.com/watch?v=QiHKdvAbYII&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=5)
+  - Rethinking in brms: [Chapter 4](https://bookdown.org/content/4857/geocentric-models.html#curves-from-lines)
