@@ -1,14 +1,13 @@
 ---
+title: "Schedule Rethinking Seminar - Winter 2023"
 author: "Jon Nations"
 format:
   html:
     toc: true
     toc-depth: 5
 editor: visual
-date: now
+date: last-modified
 ---
-
-## Schedule (Preliminary) for Rethinking Seminar - Winter 2023
 
 #### **Week 1**
 
@@ -31,31 +30,31 @@ date: now
 
 #### **Week 4**
 
--   Rethinking: Chapters 5 & 6 - Intro to Multiple Regression and Confounds
--   Lectures: [Video 5](https://www.youtube.com/watch?v=e0tO64mtYMU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=5), [Video 6](https://www.youtube.com/watch?v=l_7yIUqWBmE&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=6), & [Video 7 up to 34:36](https://www.youtube.com/watch?v=0Jc6Kgw5qc0&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=7)
--   Rethinking in brms: [Chapter 5](https://bookdown.org/content/4857/the-many-variables-the-spurious-waffles.html) and [Chapter 6](https://bookdown.org/content/4857/the-haunted-dag-the-causal-terror.html)
--   **Note** - there is a strong focus on DAGs
+-   Rethinking: Chapters 5 - Intro to Multiple Regression
+-   Lectures: [Video 5](https://www.youtube.com/watch?v=e0tO64mtYMU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=5), [Video 6](https://www.youtube.com/watch?v=l_7yIUqWBmE&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=6)
+-   Rethinking in brms: [Chapter 5](https://bookdown.org/content/4857/the-many-variables-the-spurious-waffles.html)
+-   **Note** - Jon will do a quick walk through of Chapter 6.1 because it's an important issue that, I swear, some reviewer will bring up to each of you at some point! the rest of Chapter 6 focuses on scientific models and directed acyclic graphs. This is really interesting stuff, and worth revisiting on your own when thinking about variable selection, and forming your models.
 
 #### **Week 5**
 
--   Rethinking: Focus on Chapter 8, read through Chapters 7 & 9
--   Lectures: [Video 7 starting at 34:36](https://youtu.be/0Jc6Kgw5qc0?list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&t=2080) & [Video 8](https://www.youtube.com/watch?v=gjrsYDJbRh0&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=8), & [Video 9](https://www.youtube.com/watch?v=QhHfo6-Bx8o&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=9). Video 10, found [here](https://www.youtube.com/watch?v=v-j0UmWf3Us&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=10) is great and covers MCMC but it's too much to watch in one week.
+-   Rethinking:Chapter 8
+-   Lectures:[Video 9](https://www.youtube.com/watch?v=QhHfo6-Bx8o&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=9).
 -   Rethinking in brms: [Chapter 8](https://bookdown.org/content/4857/conditional-manatees.html) (*and it is worth going through [Chapter 7](https://bookdown.org/content/4857/ulysses-compass.html) and [Chapter 9](https://bookdown.org/content/4857/markov-chain-monte-carlo.html)*)
--   **Note**: The book, lectures, and this seminar begin to diverge a bit this week. The goal of this short course is to learn to model. Chapter 8, on interactions, is a really key part of this course and what we will focus lecture time on. Chapter 7 discusses model predictive accuracy and model comparison. ***These are critical topics to Bayesian multilevel modeling*** but are very complex and time consuming to grasp, especially this early on in the topic. The same goes for MCMC machinery (Ch 9). Watch the videos, but most of our model comparison practice will be integrated into the rest of the course. *As you move forward in your projects, I recommend revisiting Chapter 7 frequently!*
+-   **Note**: Here we start really jumping around. Chapter 8, on interactions, is a really key part of this course and what we will focus lecture time on. Chapter 7 discusses model predictive accuracy and model comparison. ***These are critical topics to Bayesian multilevel modeling*** but are very complex and time consuming to grasp, especially this early on in the topic. The same goes for MCMC machinery (Ch 9). Watch the videos, [but most of our model comparison practice will be integrated into the rest of the course]{.underline}. *As you move forward in your projects, I recommend revisiting Chapter 7 frequently!*
 
 #### **Week 6**
 
--   Rethinking: Focus on Chapter 11, and read through Chapters 10 (especially 10.2) and 12.
--   Lectures: [Video 11](https://www.youtube.com/watch?v=-4y4X8ELcEM&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=11), and [Video 12](https://www.youtube.com/watch?v=hRJtKCIDTwc&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=12), and we recommend [Video 13](https://www.youtube.com/watch?v=p7g-CgGCS34&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=13), and, if you can, Video 14, found [here](https://www.youtube.com/watch?v=zA3Jxv8LOrA&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=14), covers cool features like ordinal variables.
--   Rethinking in brms: Chapters [10](https://bookdown.org/content/4857/big-entropy-and-the-generalized-linear-model.html), [11](https://bookdown.org/content/4857/god-spiked-the-integers.html), & [12](https://bookdown.org/content/4857/monsters-and-mixtures.html).
--   **Note**: Introduction to Generalized Linear Models. The types of models discussed may or may not be important to your work. For example, I use Bernoulli (logistic) and Ordered Categorical (ordinal) models all the time, but I never use Poisson models (count data). The most important things to know: 1) what are the different types of response variable distributions, and when to use them, and 2) what a **link function** is.
+-   Rethinking: Read/Skim Chapter 10, Focus on Chapter 11, and glance over Chapter 12, mostly just to see what's there so you can come back to it or use it in your project.
+-   Lectures: [Second Half of Video 11](https://youtu.be/-4y4X8ELcEM?list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&t=1194), & [Video 12](https://www.youtube.com/watch?v=hRJtKCIDTwc&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=12). If you find out that you will be using some generalized linear model for your project, go through [Video 13](https://www.youtube.com/watch?v=p7g-CgGCS34&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=13) and [Video 14](https://www.youtube.com/watch?v=zA3Jxv8LOrA&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=14) and find the relevant portions and watch them. The order should be similar to that of the text book. 
+-   Rethinking in brms: Chapters [10](https://bookdown.org/content/4857/big-entropy-and-the-generalized-linear-model.html), [11](https://bookdown.org/content/4857/god-spiked-the-integers.html). [Chapter 12](https://bookdown.org/content/4857/monsters-and-mixtures.html) is **indispensable** if you are using certain GLMs for your project.
+-   **Note**: Introduction to Generalized Linear Models! The types of models discussed may or may not be important to your work. For example, I use Bernoulli (logistic) and Ordered Categorical (ordinal) models all the time, but I never use Poisson models (count data). The most important things to know: 1) what are the different types of response variable distributions, and when to use them, and 2) what a **link function** is.
 
 #### **Week 7**
 
 -   Rethinking: Chapter 13
 -   Lectures: [Video 15](https://www.youtube.com/watch?v=AALYPv5xSos&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=15), & [Video 16](https://www.youtube.com/watch?v=ZG3Oe35R5sY&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=16)
 -   Rethinking in brms: [Chapter 13](https://bookdown.org/content/4857/models-with-memory.html)
--   **Note**: Multilevel models! This week will focus on the theory behind multilevel modeling, explain why you should (almost) always use them, and introduce "varying intercepts" models.
+-   **Note**: The big one! Multilevel models! This week will focus on the theory behind multilevel modeling, explain why you should (almost) always use them, and introduce "varying intercepts" models.
 
 #### **Week 8**
 
