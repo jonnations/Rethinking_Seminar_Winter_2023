@@ -60,7 +60,7 @@ date: now
 #### **Week 8**
 
 -   Rethinking: Chapter 14.1 - 14.4
--   Lectures: [Video 17](https://www.youtube.com/watch?v=yfXpjmWgyXU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=17), with [Video 18](https://www.youtube.com/watch?v=e5cgiAGBKzI&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=18) and [16](https://www.youtube.com/watch?v=PIuqxOBJqLU&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=16) being optional (see notes below)
+-   Lectures: [Video 17](https://www.youtube.com/watch?v=yfXpjmWgyXU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=17), with [Video 18](https://www.youtube.com/watch?v=e5cgiAGBKzI&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=18) and [Video 19](https://www.youtube.com/watch?v=pwMRbt2CbSU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=19) being optional (but it could be important to evolutionary biologists or geographers! see notes below)
 -   Rethinking in brms: Chapters [14.1 - 14.3](https://bookdown.org/content/4857/adventures-in-covariance.html#varying-slopes-by-construction) with 14.4 and 14.5 optional.
 -   **Note**: Introduction to varying slopes models. Chapters 14.1-14.3 are very critical to learn. Chapter 14.4 is a case study on social networks (any anthropologists here?), and 14.5 is a study on 2 flavors of Gaussian processes, including geospatial modeling (correlations due to geographic proximity) and phylogenetic regression (correlations due to evolutionary proximity). If you have interest in any of these things, then definitely watch Videos 15 or 16, and read the book chapters (14.4 & 14.5) carefully.
 
