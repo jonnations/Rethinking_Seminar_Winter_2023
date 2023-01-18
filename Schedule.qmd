@@ -22,6 +22,8 @@ date: now
 
 #### **Week 3**
 
+*Starting Here* I changed the videos from 2022 lectures to 2019 Lectures<br>
+
 -   Rethinking: Chapter 4
 -   Lectures: [Video 3: Geocentric Models](https://www.youtube.com/watch?v=zYYBtxHWE0A), & [Video 4: Categories, Curves, and Splines](https://www.youtube.com/watch?v=QiHKdvAbYII&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=5)
 -   Rethinking in brms: [Chapter 4](https://bookdown.org/content/4857/geocentric-models.html#curves-from-lines)
@@ -30,41 +32,41 @@ date: now
 #### **Week 4**
 
 -   Rethinking: Chapters 5 & 6 - Intro to Multiple Regression and Confounds
--   Lectures: [Video 5](https://www.youtube.com/watch?v=e0tO64mtYMU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=5), & [Video 6](https://www.youtube.com/watch?v=l_7yIUqWBmE&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=6)
+-   Lectures: [Video 5](https://www.youtube.com/watch?v=e0tO64mtYMU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=5), [Video 6](https://www.youtube.com/watch?v=l_7yIUqWBmE&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=6), & [Video 7 up to 34:36](https://www.youtube.com/watch?v=0Jc6Kgw5qc0&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=7)
 -   Rethinking in brms: [Chapter 5](https://bookdown.org/content/4857/the-many-variables-the-spurious-waffles.html) and [Chapter 6](https://bookdown.org/content/4857/the-haunted-dag-the-causal-terror.html)
--   **Note** - the strong focus on DAGs, and some of the terminology, differs between the book and the 2022 lectures. For example, "stratify" is what sometimes is called "correct for."
+-   **Note** - there is a strong focus on DAGs
 
 #### **Week 5**
 
 -   Rethinking: Focus on Chapter 8, read through Chapters 7 & 9
--   Lectures: [Video 7](https://www.youtube.com/watch?v=0Jc6Kgw5qc0&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=7) & [Video 8](https://www.youtube.com/watch?v=gjrsYDJbRh0&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=8)
+-   Lectures: [Video 7 starting at 34:36](https://youtu.be/0Jc6Kgw5qc0?list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&t=2080) & [Video 8](https://www.youtube.com/watch?v=gjrsYDJbRh0&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=8), & [Video 9](https://www.youtube.com/watch?v=QhHfo6-Bx8o&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=9). Video 10, found [here](https://www.youtube.com/watch?v=v-j0UmWf3Us&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=10) is great and covers MCMC but it's too much to watch in one week.
 -   Rethinking in brms: [Chapter 8](https://bookdown.org/content/4857/conditional-manatees.html) (*and it is worth going through [Chapter 7](https://bookdown.org/content/4857/ulysses-compass.html) and [Chapter 9](https://bookdown.org/content/4857/markov-chain-monte-carlo.html)*)
 -   **Note**: The book, lectures, and this seminar begin to diverge a bit this week. The goal of this short course is to learn to model. Chapter 8, on interactions, is a really key part of this course and what we will focus lecture time on. Chapter 7 discusses model predictive accuracy and model comparison. ***These are critical topics to Bayesian multilevel modeling*** but are very complex and time consuming to grasp, especially this early on in the topic. The same goes for MCMC machinery (Ch 9). Watch the videos, but most of our model comparison practice will be integrated into the rest of the course. *As you move forward in your projects, I recommend revisiting Chapter 7 frequently!*
 
 #### **Week 6**
 
 -   Rethinking: Focus on Chapter 11, and read through Chapters 10 (especially 10.2) and 12.
--   Lectures: [Video 9](https://www.youtube.com/watch?v=QhHfo6-Bx8o&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=9), and [Video 10](https://www.youtube.com/watch?v=v-j0UmWf3Us&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=10), and we recommend [Video 11](https://www.youtube.com/watch?v=-4y4X8ELcEM&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=11).
+-   Lectures: [Video 11](https://www.youtube.com/watch?v=-4y4X8ELcEM&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=11), and [Video 12](https://www.youtube.com/watch?v=hRJtKCIDTwc&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=12), and we recommend [Video 13](https://www.youtube.com/watch?v=p7g-CgGCS34&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=13), and, if you can, Video 14, found [here](https://www.youtube.com/watch?v=zA3Jxv8LOrA&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=14), covers cool features like ordinal variables.
 -   Rethinking in brms: Chapters [10](https://bookdown.org/content/4857/big-entropy-and-the-generalized-linear-model.html), [11](https://bookdown.org/content/4857/god-spiked-the-integers.html), & [12](https://bookdown.org/content/4857/monsters-and-mixtures.html).
 -   **Note**: Introduction to Generalized Linear Models. The types of models discussed may or may not be important to your work. For example, I use Bernoulli (logistic) and Ordered Categorical (ordinal) models all the time, but I never use Poisson models (count data). The most important things to know: 1) what are the different types of response variable distributions, and when to use them, and 2) what a **link function** is.
 
 #### **Week 7**
 
 -   Rethinking: Chapter 13
--   Lectures: [Video 12](https://www.youtube.com/watch?v=SocRgsf202M&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=12), & [Video 13](https://www.youtube.com/watch?v=n2aJYtuGu54&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=13)
+-   Lectures: [Video 15](https://www.youtube.com/watch?v=AALYPv5xSos&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=15), & [Video 16](https://www.youtube.com/watch?v=ZG3Oe35R5sY&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=16)
 -   Rethinking in brms: [Chapter 13](https://bookdown.org/content/4857/models-with-memory.html)
 -   **Note**: Multilevel models! This week will focus on the theory behind multilevel modeling, explain why you should (almost) always use them, and introduce "varying intercepts" models.
 
 #### **Week 8**
 
 -   Rethinking: Chapter 14.1 - 14.4
--   Lectures: [Video 14](https://www.youtube.com/watch?v=XDoAglqd7ss&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=14), with Videos [15](https://www.youtube.com/watch?v=L_QumFUv7C8&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=15) and [16](https://www.youtube.com/watch?v=PIuqxOBJqLU&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=16) being optional (see notes below)
+-   Lectures: [Video 17](https://www.youtube.com/watch?v=yfXpjmWgyXU&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=17), with [Video 18](https://www.youtube.com/watch?v=e5cgiAGBKzI&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=18) and [16](https://www.youtube.com/watch?v=PIuqxOBJqLU&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=16) being optional (see notes below)
 -   Rethinking in brms: Chapters [14.1 - 14.3](https://bookdown.org/content/4857/adventures-in-covariance.html#varying-slopes-by-construction) with 14.4 and 14.5 optional.
 -   **Note**: Introduction to varying slopes models. Chapters 14.1-14.3 are very critical to learn. Chapter 14.4 is a case study on social networks (any anthropologists here?), and 14.5 is a study on 2 flavors of Gaussian processes, including geospatial modeling (correlations due to geographic proximity) and phylogenetic regression (correlations due to evolutionary proximity). If you have interest in any of these things, then definitely watch Videos 15 or 16, and read the book chapters (14.4 & 14.5) carefully.
 
 #### **Week 9**
 
 -   Rethinking: Chapter 15.1-15.2, and 17
--   Lectures: [Video 17](https://www.youtube.com/watch?v=lTFAB6QmwHM&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=17), [Video 20](https://www.youtube.com/watch?v=qV3eos7maGs&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=20), and, suggested, is [Video 18](https://www.youtube.com/watch?v=oMiSb8GKR0o&list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN&index=18)
+-   Lectures: [Video 20](https://www.youtube.com/watch?v=UgLF0aLk85s&list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI&index=20)
 -   Rethinking in brms: Chapters [15.1 and 15.2](https://bookdown.org/content/4857/missing-data-and-other-opportunities.html)
 -   **Note**: Wrapping up with measurement error and missing data. 15.1 and 15.2 are methods that will likely serve everyone is this course. Also *HIGHLY RECCOMMENDED* is this [brms vignette on missing data](https://cran.r-project.org/web/packages/brms/vignettes/brms_missings.html). Chapter 17 is a really nice summary of what to think about going forward.

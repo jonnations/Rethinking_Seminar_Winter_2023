@@ -3,3 +3,128 @@ title: "Contrasts"
 output: html_notebook
 ---
 
+```{r}
+pacman::p_load(tidyverse, brms, cmdstanr, tidybayes)
+```
+
+```{r}
+library(rethinking)
+data(Howell1)
+d <- Howell1
+rm(Howell1)
+detach(package:rethinking, unload = T)
+d2 <- 
+  d %>%
+  filter(age >= 18)
+```
+
+```{r}
+d2 %>%
+  str()
+```
+
+```{r}
+d2$sex = as.factor(d2$male + 1)
+d2 %>% glimpse()
+```
+
+```{r}
+b5.15 <- 
+  brm(data = d2, family = gaussian,
+      height ~ 0 + sex,
+      prior = c(#prior(normal(178, 100), class = Intercept),
+                prior(normal(178, 100), class = b),
+                prior(cauchy(0, 2), class = sigma)),
+      iter = 2000, warmup = 500, chains = 4, cores = 4,
+      seed = 5,
+      refresh = 0,
+       backend = "cmdstanr")
+```
+
+
+```{r}
+posterior_predict(b5.15, newdata = d2) %>% 
+  as_tibble() %>%
+  mutate(female = b_sex1, male = b_sex2) %>% 
+  select(sigma, female, male) %>% 
+  pivot_longer(!sigma, names_to = "sex", values_to = "height") %>% 
+  
+  ggplot(aes(x = height), color = sex, fill = sex) +
+  geom_density() +
+    #stat_halfeyeh(point_interval = median_qi, .width = .95) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(subtitle = "Model-implied male heights",
+       x = expression(alpha + beta["male"])) +
+  theme_bw() +
+  theme(panel.grid = element_blank())
+```
+
+
+```{r}
+library(rethinking)
+data(Howell1)
+d <- Howell1
+rm(Howell1)
+detach(package:rethinking, unload = T)
+
+b5.15 <- 
+  brm(data = d, family = gaussian,
+      height ~ 1 + male,
+      prior = c(prior(normal(178, 100), class = Intercept),
+                prior(normal(0, 10), class = b),
+                prior(cauchy(0, 2), class = sigma)),
+      iter = 2000, warmup = 500, chains = 4, cores = 4,
+      seed = 5,
+      refresh = 0)
+
+nd <- tibble(male = 1)
+
+fitted(b5.15,
+       newdata = nd,
+       summary = F) %>% 
+  as_tibble() %>% 
+ ggplot(aes(x = V1, y = 0)) +
+    geom_halfeyeh(fill = "firebrick4", 
+                point_interval = median_qi, .width = .95) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(subtitle = "Model-implied male heights",
+       x = expression(alpha + beta["male"])) +
+  theme_bw() +
+  theme(panel.grid = element_blank())
+```
+
+```{r}
+
+d <-
+  d %>%
+  mutate(female = 1 - male, 
+  height = scale(height))
+
+
+b5.15b <- 
+  brm(data = d, family = gaussian,
+      height ~ 0 + male + female,
+      prior = c(prior(normal(178, 100), class = b),
+                prior(cauchy(0, 2), class = sigma)),
+      iter = 2000, warmup = 500, chains = 4, cores = 4,
+      seed = 5,
+      refresh = 0,
+      backend = "cmdstan")
+
+posterior_samples(b5.15b) %>% 
+  mutate(dif = b_male - b_female) %>% 
+  
+  ggplot() +
+    geom_halfeyeh(aes(x = dif, y = 0), fill = "firebrick4", alpha = 0.5,
+                point_interval = median_qi, .width = .95) +
+  geom_halfeyeh(aes(x = b_male, y = 0), fill = "orange4", alpha = 0.5,
+                point_interval = median_qi, .width = .95) +
+  geom_halfeyeh(aes(x = b_female, y = 0), fill = "blue4", alpha = 0.5,
+                point_interval = median_qi, .width = .95) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(subtitle = "Model-implied difference score",
+       x = expression(alpha["male"] - alpha["female"])) +
+  theme_bw() +
+  theme(panel.grid = element_blank())
+```
+
