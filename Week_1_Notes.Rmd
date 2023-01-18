@@ -1,0 +1,50 @@
+---
+title: "Week 1 Notes"
+output:
+  html_document:
+    df_print: paged
+---
+
+## Notes for Intoductory Class - Week 1
+
+#### Personal background on statistics and this book
+  - little background in statistics
+  - frustrated with PCMs and the lack of flexibility
+  - Didn't realize all the options out there!
+
+#### Multilevel modeling
+  - Allows us to create generative models of our data, or the joint probabilities of our variables
+  - There are natural structures in our data that can't be ignored, like taking the mean of a species
+
+#### Bayesian Approach
+  - Offers the most logical and practical way to model our data
+  - Conducive to regularization, missing data, etc,
+  - Probabilities offer an intuitive way to explain and understand our systems
+  - There is a principled workflow
+  - Many tools are tighly integrated with other data science tools for easy visualization, data wrangling, etc.
+  
+#### This Seminar Course
+  - In addition to the text, using the 2022 lectures and the rethinking in brms book
+  - Newest version of the course focus heavily on scientific models, causal inference, and DAGs. New to me!
+  - Explain expectations -> Mark?
+  - Principles Bayesian Workflow: Scientific Model -> Statistical Model -> Prior Predictive Simulation -> Model Fitting -> Predictive Accuracy/Model Comparison -> Posterior Predictive Simulation -> Data Visualization and Reporting
+  
+#### Tools
+  - Rethinking package, and brms package. If you are not wedded to base R, I strongly suggest learning the tidyverse!!!!!
+  - RStudio, RMarkdown, knitting
+  - Scripting, Software engineering by amateurs. Important to document work, and make it reproducible! And Keep track of it! RMarkdown makes this really easy. 
+
+```{r}
+pacman::p_load(tidyverse, brms)
+```
+
+```{r}
+m1 <- brm(mpg ~ hp, data = mtcars, refresh = 0)
+
+loo(m1)
+
+plot(conditional_effects(m1), points = T)
+
+pp_check(m1, ndraws = 200)
+```
+
