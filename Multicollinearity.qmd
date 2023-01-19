@@ -98,12 +98,12 @@ d
 ```
 What happens when we use these two highly correlated variables in our analysis?
 
-
+$$
 \begin{align*}
 \text{Height}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \\
 \mu_i & = \alpha + \beta_1 \text{Left-Leg}_i + \beta_2 \text{Right-Leg}_i.
 \end{align*}
-
+$$
 
 
 ```{r}
