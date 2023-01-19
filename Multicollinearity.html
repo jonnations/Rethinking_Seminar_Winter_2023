@@ -85,6 +85,7 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
 
 
@@ -99,14 +100,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="Multicollinearity_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="Multicollinearity_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#selection-bias" id="toc-selection-bias" class="nav-link active" data-scroll-target="#selection-bias">Selection Bias</a></li>
+  <li><a href="#multicollinearity-simulated-example" id="toc-multicollinearity-simulated-example" class="nav-link" data-scroll-target="#multicollinearity-simulated-example">Multicollinearity: Simulated Example</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -195,12 +204,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>What happens when we use these two highly correlated variables in our analysis?</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><img style="vertical-align:middle" src="https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Cbegin%7Balign%2A%7D%0A%5Ctext%7BHeight%7D_i%20%20%20%26%20%5Csim%20%5Coperatorname%7BNormal%7D%28%5Cmu_i%2C%20%5Csigma%29%20%5C%5C%0A%5Cmu_i%20%26%20%3D%20%5Calpha%20%2B%20%5Cbeta_1%20%5Ctext%7BLeft-Leg%7D_i%20%2B%20%5Cbeta_2%20%5Ctext%7BRight-Leg%7D_i.%0A%5Cend%7Balign%2A%7D" alt="\begin{align*}
 \text{Height}_i   &amp; \sim \operatorname{Normal}(\mu_i, \sigma) \\
 \mu_i &amp; = \alpha + \beta_1 \text{Left-Leg}_i + \beta_2 \text{Right-Leg}_i.
-\end{align*}
-\]</span></p>
+\end{align*}" title="\begin{align*}
+\text{Height}_i   &amp; \sim \operatorname{Normal}(\mu_i, \sigma) \\
+\mu_i &amp; = \alpha + \beta_1 \text{Left-Leg}_i + \beta_2 \text{Right-Leg}_i.
+\end{align*}" class="math display"></p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Multicollinearity_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
@@ -244,10 +254,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>This is weird - What happens in a model with just one leg?</p>
-<span class="math display">\[\begin{align*}
+<p><img style="vertical-align:middle" src="https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Cbegin%7Balign%2A%7D%0A%5Ctext%7BHeight%7D_i%20%20%20%26%20%5Csim%20%5Coperatorname%7BNormal%7D%28%5Cmu_i%2C%20%5Csigma%29%20%5C%5C%0A%5Cmu_i%20%26%20%3D%20%5Calpha%20%2B%20%5Cbeta_1%20%5Ctext%7BLeft-Leg%7D_i%0A%5Cend%7Balign%2A%7D" alt="\begin{align*}
 \text{Height}_i   &amp; \sim \operatorname{Normal}(\mu_i, \sigma) \\
 \mu_i &amp; = \alpha + \beta_1 \text{Left-Leg}_i
-\end{align*}\]</span>
+\end{align*}" title="\begin{align*}
+\text{Height}_i   &amp; \sim \operatorname{Normal}(\mu_i, \sigma) \\
+\mu_i &amp; = \alpha + \beta_1 \text{Left-Leg}_i
+\end{align*}" class="math display"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> <span class="co">#patchwork plotting - the best figure-making package ever!</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

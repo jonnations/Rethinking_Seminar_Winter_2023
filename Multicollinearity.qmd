@@ -2,9 +2,11 @@
 title: "Multicollinearity"
 author: "Jon Nations"
 format:
-  pdf: 
-    documentclass: scrartcl
-  html: default
+  html:
+    toc: true
+    toc-depth: 5
+    html-math-method: webtex
+editor: visual
 date: last-modified
 ---
 
@@ -15,7 +17,7 @@ Multicollinearity is important, so let's talk about it.
 pacman::p_load(tidyverse, brms, cmdstanr, tidybayes, patchwork)
 ```
 
-But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science. As mentioned in the text, this is a real problem. I'm sure you can think of examples in your field of papers or funded projects that fall into these categories. 
+But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science. As mentioned in the text, this is a real problem. I'm sure you can think of examples in your field of papers or funded projects that fall into these categories.
 
 ### Selection Bias
 
@@ -70,9 +72,10 @@ d %>%
 
 Multicollinearity is historically a big topic of conversation in applied statistics. Now that you've heard about it, you will start to see it pop up in a lot of places. Often, you will see it spoken of as this evil feature of data, the worst thing possible, and a reason why your analyses may be totally flawed!!
 
-I think this book does a good job explaining what it is, and why it happens, and how to look out for it. It's not some evil demon lurking, rather, it's just a feature of regression. And, in this case, it results in a false negative rather than a false positive. 
+I think this book does a good job explaining what it is, and why it happens, and how to look out for it. It's not some evil demon lurking, rather, it's just a feature of regression. And, in this case, it results in a false negative rather than a false positive.
 
 Simulate some data
+
 ```{r}
 #| warning: false
 #| 
@@ -94,13 +97,15 @@ d <-
 
 d
 ```
+
 What happens when we use these two highly correlated variables in our analysis?
 
-
+$$
 \begin{align*}
 \text{Height}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \\
 \mu_i & = \alpha + \beta_1 \text{Left-Leg}_i + \beta_2 \text{Right-Leg}_i.
 \end{align*}
+$$
 
 
 
@@ -123,8 +128,6 @@ b6.1 <-
       backend = "cmdstan")
 ```
 
-
-
 ```{r}
 #| warning: false
 #| echo: false
@@ -145,6 +148,7 @@ b6.1 %>%
 ```
 
 Why does this happen?
+
 ```{r}
 #| warning: false
 #| echo: false
@@ -158,9 +162,11 @@ post %>%
   labs(title = "Variables are Highly Correlated!",
        subtitle = "When Left leg is a large value, Right Leg is a small value") + coord_fixed()
 ```
+
 What can't be seen from this plot however is that the correlation is related by draw. When the model estimates a high value for right leg, it estimates an almost equally low value for right leg, with the mean value as the center point!
 
 See if you can spot that here:
+
 ```{r}
 #| warning: false
 post %>% 
@@ -168,6 +174,7 @@ post %>%
   # calculate the mean value of the left and right leg estimates
   mutate(mean_leg = (b_leg_left + b_leg_right)/2)
 ```
+
 Look at how those mean values are similar!!!
 
 Interestingly, if we simply sum the beta values together...
@@ -187,11 +194,12 @@ p1
 
 This is weird - What happens in a model with just one leg?
 
-
+$$
 \begin{align*}
 \text{Height}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \\
 \mu_i & = \alpha + \beta_1 \text{Left-Leg}_i
 \end{align*}
+$$
 
 
 ```{r}
@@ -224,19 +232,17 @@ p2 <- post2 %>%
        subtitle = "Marked by the median and 89% PIs") + theme_bw()
 ```
 
-
 ```{r fig.width = 8.5, fig.height = 3, warning = F, message = F}
  #patchwork plotting - the best figure-making package ever!
 p1 + p2
 ```
 
+> The basic lesson is only this: When two predictor variables are very strongly correlated (conditional on other variables in the model), including both in a model may lead to confusion. The posterior distribution isn't wrong, in such cases. It's telling you that the question you asked cannot be answered with these data. And that's a great thing for a model to say, that it cannot answer your question. And if you are just interested in prediction, you'll find that this leg model makes fine predictions. It just doesn't make any claims about which leg is more important. (p. 166)
 
+How do we deal with multicollinearity?
 
-> The basic lesson is only this: When two predictor variables are very strongly correlated (conditional on other variables in the model), including both in a model may lead to confusion. The posterior distribution isn't wrong, in such cases. It's telling you that the question you asked cannot be answered with these data. And that's a great thing for a model to say, that it cannot answer your question. And if you are just interested in prediction, you'll find that this leg model makes fine predictions. It just doesn’t make any claims about which leg is more important. (p. 166)
+1.  Explore your data!
 
-How do we deal with multicollinearity?  
+2.  Think about a **Scientific Model**, preferably using causal reasoning and Directed Acyclic Graphs, to see the effects of one variable on the other, so you know what to "control for."\
 
-1. Explore your data!  
-
-2. Think about a **Scientific Model**, preferably using causal reasoning and Directed Acyclic Graphs, to see the effects of one variable on the other, so you know what to "control for."  
-3. There are various methods of variable selection which can identify co-linear variables. Variance Inflation Factor (VIF) is an older but still commonly used method. Lasso or horseshoe priors are another interesting way to do variable selection. These are really tight priors with really long narrow tails. The idea is that any variable with a large effect size has enough influence to end up in posterior space far away from the mean. A newer method that works with modern Bayesian Multilevel Modeling is Projection Prediction, or [ProjPred](https://mc-stan.org/projpred/), which uses cross validation and model accuracy to determine the importance of different variables. However, these are often easy ways to bypass thoughtful consideration of variables and use "causal salad" to throw it at the wall and see what sticks. ***Nothing can take the place of a well thought out scientific model and causal reasoning that determines the causal relationships between variables!***
+3.  There are various methods of variable selection which can identify co-linear variables. Variance Inflation Factor (VIF) is an older but still commonly used method. Lasso or horseshoe priors are another interesting way to do variable selection. These are really tight priors with really long narrow tails. The idea is that any variable with a large effect size has enough influence to end up in posterior space far away from the mean. A newer method that works with modern Bayesian Multilevel Modeling is Projection Prediction, or [ProjPred](https://mc-stan.org/projpred/), which uses cross validation and model accuracy to determine the importance of different variables. However, these are often easy ways to bypass thoughtful consideration of variables and use "causal salad" to throw it at the wall and see what sticks. ***Nothing can take the place of a well thought out scientific model and causal reasoning that determines the causal relationships between variables!***
