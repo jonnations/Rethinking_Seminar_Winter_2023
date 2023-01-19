@@ -194,11 +194,11 @@ p1
 
 This is weird - What happens in a model with just one leg?
 
-
+$$
 \begin{align*}
 \text{Height}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \ \mu_i & = \alpha + \beta_1 \text{Left-Leg}_i
 \end{align*}
-
+$$
 
 
 ```{r}
