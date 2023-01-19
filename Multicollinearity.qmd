@@ -1,0 +1,209 @@
+---
+title: "Multicollinearity"
+author: "Jon Nations"
+format:
+  html:
+    toc: true
+    toc-depth: 5
+    html-math-method: katex
+#editor: visual
+date: last-modified
+---
+
+Multicollinearity is important, so let's talk about it real quick
+
+```{r}
+#| echo: false
+pacman::p_load(tidyverse, brms, cmdstanr, tidybayes, patchwork)
+```
+
+### Selection Bias
+
+```{r}
+#| echo: false
+set.seed(1914)
+n <- 200  # number of grant proposals
+p <- 0.1  # proportion to select
+
+d <-
+  # uncorrelated newsworthiness and trustworthiness
+  tibble(newsworthiness  = rnorm(n, mean = 0, sd = 1),
+         trustworthiness = rnorm(n, mean = 0, sd = 1)) %>% 
+  # total_score
+  mutate(total_score = newsworthiness + trustworthiness) %>% 
+  # select top 10% of combined scores
+  mutate(selected = ifelse(total_score >= quantile(total_score, 1 - p), TRUE, FALSE))
+```
+
+Plot Selection bias
+
+```{r}
+#| warning: false
+#| echo: false
+#| fig.width: 6
+#| fig.height: 6
+text <-
+  tibble(newsworthiness  = c(2, 1), 
+         trustworthiness = c(2.25, -2.5),
+         selected        = c(TRUE, FALSE),
+         label           = c("selected", "rejected"))
+
+d %>% 
+  ggplot(aes(x = newsworthiness, y = trustworthiness, color = selected)) +
+  geom_point(aes(shape = selected), alpha = 3/4) +
+  geom_text(data = text,
+            aes(label = label),
+            size = 5) +
+  geom_smooth(data = . %>% filter(selected == TRUE),
+              method = "lm", fullrange = T,
+              color = "firebrick4", se = F, size = 1/2) +
+  scale_color_manual(values = c("black", "firebrick4")) +
+  scale_shape_manual(values = c(1, 19)) +
+  scale_x_continuous(limits = c(-3, 3.9), expand = c(0, 0)) +
+  coord_cartesian(ylim = range(d$trustworthiness)) +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title = element_text(size=14,face="bold")) + coord_fixed() +
+  ggtitle("Selection-Distortion Effect")
+```
+
+## Multicollinearity: Simulated Example
+
+```{r}
+#| warning: false
+#| echo: false
+
+n <- 100
+set.seed(909)
+
+d <- 
+  tibble(height   = rnorm(n, mean = 10, sd = 2),
+         leg_prop = runif(n, min = 0.4, max = 0.5)) %>% 
+  mutate(leg_left  = leg_prop * height + rnorm(n, mean = 0, sd = 0.02),
+         leg_right = leg_prop * height + rnorm(n, mean = 0, sd = 0.02))
+```
+
+```{r}
+d %>% head()
+```
+What happens when we use these two highly correlated variables in our analysis?
+
+```{=tex}
+\begin{align*}
+\text{Height}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \\
+\mu_i & = \alpha + \beta_1 \text{Left-Leg}_i + \beta_2 \text{Right-Leg}_i.
+\end{align*}
+```
+
+
+```{r}
+#| warning: false
+#| echo: false
+#| cache: true
+#| include: false
+
+b6.1 <- 
+  brm(data = d, 
+      family = gaussian,
+      height ~ 1 + leg_left + leg_right,
+      prior = c(prior(normal(10, 100), class = Intercept),
+                prior(normal(2, 10), class = b),
+                prior(exponential(1), class = sigma)),
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      seed = 6,
+      refresh = 0,
+      backend = "cmdstan")
+```
+
+
+
+```{r}
+#| warning: false
+#| echo: false
+b6.1 %>% 
+  gather_draws(b_leg_left, b_leg_right, sigma, b_Intercept) %>% 
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_pointinterval(.width = c(.66, .89), color = "forestgreen", fill = "forestgreen") +
+  labs(x = "posterior", y = NULL,
+       title = "The coefficient plot for the two-leg model",
+       subtitle = "Holy smokes; look at the widths of those betas!") +
+  xlim(-4,6) +
+  theme(axis.text.y = element_text(hjust = 0),
+        panel.border = element_rect(color = "black", fill = "transparent"),
+        panel.grid.minor = element_blank(),
+        strip.text = element_text(hjust = 0)) +
+  theme_bw()
+  
+```
+
+Why does this happen?
+```{r}
+#| warning: false
+#| echo: false
+#| cache: true
+
+post <- as_draws_df(b6.1)
+  
+post %>% 
+  ggplot(aes(x = b_leg_left, y = b_leg_right)) +
+  geom_point(color = "forestgreen", alpha = 1/10, size = 1/2) + theme_bw() +
+  labs(title = "Really Correlated!",
+       subtitle = "When Left leg is a large value, Right Leg is a small value") + coord_fixed()
+```
+However, if we simply sum the beta values together?
+
+```{r fig.width = 4, fig.height = 3, warning = F, message = F, echo = F}
+
+p1 <- post %>% 
+  ggplot(aes(x = b_leg_left + b_leg_right, y = 0)) +
+ stat_slabinterval(quantiles = 200, point_interval = median_qi, 
+               fill = "forestgreen", color = "black", .width = .89, alpha = 0.8) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(title = "Sum the multicollinear coefficients",
+       subtitle = "Marked by the median and 89% PIs") + 
+  xlim(1.7, 2.3) + theme_bw() 
+p1
+```
+
+This is weird - What happens in a model with just one leg?
+
+```{r}
+#| warning: false
+#| echo: false
+#| cache: true
+#| include: false
+
+b6.2 <- 
+  brm(data = d, 
+      family = gaussian,
+      height ~ 1 + leg_left ,
+      prior = c(prior(normal(10, 100), class = Intercept),
+                prior(normal(2, 10), class = b),
+                prior(exponential(1), class = sigma)),
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      seed = 6,
+      refresh = 0,
+      backend = "cmdstan")
+
+post2 <- as_draws_df(b6.2)
+
+p2 <- post2 %>% 
+  ggplot(aes(x = b_leg_left, y = 0)) +
+ stat_slabinterval(quantiles = 200, point_interval = median_qi, 
+               fill = "forestgreen", color = "black", .width = .89, alpha = 0.8) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  xlim(1.7, 2.3) +
+  labs(title = "Model with Only One Leg",
+       subtitle = "Marked by the median and 89% PIs") + theme_bw()
+```
+
+
+```{r fig.width = 8.5, fig.height = 3, warning = F, message = F}
+ #patchwork plotting
+p1 + p2
+```
+
+
+
+> The basic lesson is only this: When two predictor variables are very strongly correlated (conditional on other variables in the model), including both in a model may lead to confusion. The posterior distribution isn't wrong, in such cases. It's telling you that the question you asked cannot be answered with these data. And that's a great thing for a model to say, that it cannot answer your question. And if you are just interested in prediction, you'll find that this leg model makes fine predictions. It just doesn’t make any claims about which leg is more important. (p. 166)
+
