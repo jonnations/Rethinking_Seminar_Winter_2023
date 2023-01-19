@@ -1,5 +1,5 @@
 ---
-title: "Schedule Rethinking Seminar - Winter 2023"
+title: "Schedule: Rethinking Seminar - Winter 2023"
 author: "Jon Nations"
 format:
   html:
