@@ -19,6 +19,10 @@ pacman::p_load(tidyverse, brms, cmdstanr, tidybayes, patchwork)
 
 But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science. As mentioned in the text, this is a real problem. I'm sure you can think of examples in your field of papers or funded projects that fall into these categories.
 
+#####
+[reference here!!!](https://youtu.be/KNPYUVmY3NM?t=5747)
+
+
 ### Selection Bias
 
 ```{r}
