@@ -14,10 +14,10 @@ Multicollinearity is important, so let's talk about it.
 
 ```{r}
 #| echo: false
-pacman::p_load(tidyverse, brms, cmdstanr, tidybayes, patchwork)
+pacman::p_load(tidyverse, brms, cmdstanr, tidybayes, patchwork, ggdag)
 ```
 
-But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science. As mentioned in the text, this is a real problem. I'm sure you can think of examples in your field of papers or funded projects that fall into these categories.
+But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science.
 
 #####
 [reference here!!!](https://youtu.be/KNPYUVmY3NM?t=5747)
@@ -69,8 +69,30 @@ d %>%
   theme(legend.position = "none",
         axis.title = element_text(size=14,face="bold")) + coord_fixed() +
   labs(title = "Selection-Distortion Effect",
-       subtitle = "Sadly, this is real. Something to think about...")
+       subtitle = "Sadly, this is real. But the cause isn't what you might think")
 ```
+
+But why does this happen?
+
+Trustworthiness and Newsworthiness are not ACTUALLY correlated!
+```{r}
+#| echo = F
+dag_coords <-
+  tibble(name = c("T", "S", "N"),
+         x    = 1:3,
+         y    = 1)
+
+dagify(S ~ T + N,
+       coords = dag_coords) %>%
+ ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+    geom_dag_point(color = "steelblue", alpha = 1/2, size = 15.5) +
+    geom_dag_text(color = "black") +
+    geom_dag_edges() + 
+    theme_dag() +
+  ggtitle("Conditioning on a Collider:\nTrustworthiness and Newsworthiness both influence Selection,\nbut one does not directly influence the other!")
+```
+
+
 
 ## Multicollinearity: Simulated Example
 

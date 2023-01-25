@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jon Nations">
-<meta name="dcterms.date" content="2023-01-20">
+<meta name="dcterms.date" content="2023-01-25">
 
 <title>Multicollinearity</title>
 <style>
@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 20, 2023</p>
+      <p class="date">January 25, 2023</p>
     </div>
   </div>
   
@@ -152,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 
 </div>
-<p>But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science. As mentioned in the text, this is a real problem. I’m sure you can think of examples in your field of papers or funded projects that fall into these categories.</p>
+<p>But first, I want to plot the graph from the opening of Chapter 6 on selection bias in science.</p>
 <section id="section" class="level5">
 <h5 class="anchored" data-anchor-id="section"></h5>
 <p><a href="https://youtu.be/KNPYUVmY3NM?t=5747">reference here!!!</a></p>
@@ -165,6 +165,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Multicollinearity_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>But why does this happen?</p>
+<p>Trustworthiness and Newsworthiness are not ACTUALLY correlated!</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -218,13 +225,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \end{align*}" class="math display"></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Why does this happen?</p>
-<div class="cell" data-hash="Multicollinearity_cache/html/unnamed-chunk-7_e8e837635d2e952b8291e26d5f90c065">
+<div class="cell" data-hash="Multicollinearity_cache/html/unnamed-chunk-8_8b69b7a2b809fad448cc557fb850dd4f">
 <div class="cell-output-display">
-<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>What can’t be seen from this plot however is that the correlation is related by draw. When the model estimates a high value for right leg, it estimates an almost equally low value for right leg, with the mean value as the center point!</p>
@@ -255,7 +262,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Interestingly, if we simply sum the beta values together…</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="384"></p>
+<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="384"></p>
 </div>
 </div>
 <p>This is weird - What happens in a model with just one leg?</p>
@@ -268,7 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> <span class="co">#patchwork plotting - the best figure-making package ever!</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="816"></p>
+<p><img src="Multicollinearity_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="816"></p>
 </div>
 </div>
 <blockquote class="blockquote">

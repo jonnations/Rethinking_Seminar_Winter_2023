@@ -12,3 +12,4 @@ brms
 cmdstanr
 tidybayes
 patchwork
+ggdag
