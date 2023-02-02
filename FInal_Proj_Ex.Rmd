@@ -1,0 +1,419 @@
+---
+title: "Bayesian modeling illuminates some magnificient details of the `mtcars` dataset, yet, heretofore, fails to dethrone thermodynamics"
+author: "Jon Nations"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 6
+code_download: true
+---
+
+## Background & Motivations
+
+People love cars, but they are complicated and many mammalogists lack even a basic understanding of their mechanics. Perhaps the best way to learn about cars in `R` -- without putting in any real effort -- is by using the `mtcars` dataset that comes with several packages, such as any `tidyverse` package (`ggplot`, `dplyr`, etc.). *Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.*
+
+Previous research by Isaac Newton has shown that certain features of cars may have an impact on others. For example, it is hypothesized that the size of the engine (number of cylinders, total displacement of the pistons) may have a strong positive effect on the amount of energy (horsepower) that the car's engine is capable of generating, but a negative effect on the car's efficiency (miles per gallon of gasoline). However, the answer to this question remains enigmatic to mammalogists. Additionally, several possible confounds exist, such as the transmission type (automatic or manual). 
+
+In this research, I will use the fabled `mtcars` dataset to challenge the laws of thermodynamics by generating predictive models of the relationship between the size of a car's engine, it's efficiency, and the power it is capable of generating.
+
+## Intro to the data set
+
+Begin by loading the relevant packages, and using `results='hide'` in the embedded code chunk so the output doesn't show up in the rendered html file (just saying this for demonstration).
+```{r results='hide'}
+pacman::p_load(tidyverse, kableExtra, GGally, ggdag, dagitty)
+
+```
+
+Here is a scroll-able table of the dataset
+```{r echo=F}
+mtcars %>% kbl() %>%
+  kable_paper() %>%
+  scroll_box(width = "500px", height = "200px")
+```
+Some of these column names may not make sense, so here is a description:
+
+**mpg  ** = Miles/(US) gallon  
+**cyl  ** = Number of cylinders  
+**disp ** = Displacement (cu.in.)  
+**hp 	 ** = Gross horsepower  
+**drat ** = Rear axle ratio  
+**wt 	 ** = Weight (lb/1000)  
+**qsec ** = 1/4 mile time  
+**vs 	 ** = V/S  
+**am 	 ** = Transmission (0 = automatic, 1 = manual)  
+**gear ** = Number of forward gears  
+**carb ** = Number of carburetors  
+
+
+There are a lot of interesting features here. I believe that the key focus should be variables that indicate the engine size, like `cyl`, and `disp`, variables of efficiency like `mpg`, and indicators of engine performance like `hp`. However, there are some possible confounding features of these cars that might affect the model, such as the weight of the vehicle, and the transmission type. 
+
+Lets check some of the correlations between variables, as this may inform us on some of the relationships. However, I am going to drop a few variables to make the plot easier to read. In your report, code like this can be included or hidden from the html, but ***do not hide model or data wrangling code!*** If you do, no one will know what you did!
+
+```{r cache = TRUE, message=FALSE}
+mtcars %>% 
+  # selecting only the relevant variables
+  select(hp, mpg, cyl, disp, wt, am) %>% 
+  # plotting
+  ggpairs() + 
+  ggtitle("Interesting! Some strong correlations, but less than I expected for some variables")
+```
+
+
+# Scientific Models 
+
+#### Model 1
+I believe that the size of the engine affects the horsepower, and that horsepower can negatively affect efficiency. But the relationship is complicated
+
+I will write it out here
+```{r}
+car_dag <- 
+  dagitty(
+    "dag {
+    Mpg <- Hp <- Cyl
+    Mpg <- Hp <- Disp
+    Mpg <- Disp <- Cyl
+    Mpg <- Wt <- Cyl 
+    Mpg <- Wt <- Disp
+    Mpg <- Disp
+    Mpg <- Cyl
+    }"
+  )
+```
+
+So there are a lot of moving pieces here!
+Plotting the DAG
+
+```{r echo=F}
+dag_coords <-
+  tibble(name = c("Disp", "Cyl", "Wt", "Hp", "Mpg"),
+         x    = c(1, 2, 3, 2, 3),
+         y    = c(2, 1.75, 2, 1, 1))
+
+dagify(Mpg ~ Cyl + Hp + Disp + Wt,
+       Disp ~ Cyl,
+       Wt ~ Cyl + Disp,
+       Hp ~ Disp + Cyl,
+       exposure = 'Hp',
+       outcome = 'Mpg',
+       coords = dag_coords) %>%
+  
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_point(aes(color = name == "Mpg"),
+                 alpha = 1/2, size = 6.5, show.legend = F) +
+  geom_point(x = 2, y = 1, 
+             size = 6.5, shape = 1, stroke = 1, color = "orange") +
+  geom_dag_text(color = "black") +
+  geom_dag_edges() +
+  scale_color_manual(values = c("steelblue", "orange")) +
+  scale_x_continuous(NULL, breaks = NULL, expand = c(.1, .1)) +
+  scale_y_continuous(NULL, breaks = NULL, expand = c(.1, .1)) + 
+  ggtitle("This is a little complicated")
+```
+
+Fortunately, I can use the DAG I drew here to understand which variables to condition on. 
+
+```{r}
+adjustmentSets(car_dag, exposure = "Hp", outcome = "Mpg")
+```
+So, to modeling the effect of Horsepower on Miles-per-Gallon, I need to stratify on the number of cylinders and the displacement.
+
+Here is the initial model:
+$$
+\begin{align*}
+\text{MPG}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \\
+\mu_i & = \alpha + \beta_1 \text{Horsepower}_i + \beta_2 \text{Displacement}_i + \beta_3 \text{Cylinders}
+\end{align*}
+$$
+
+#### Model 2  
+
+However, is the relationship between engine size, power, and efficiency mediated by the type of transmission? We can build upon **Model 1** and estimate a different effect size for each transmission type. Perhaps this better informs us of the relationship between power and efficiency.
+
+$$
+\begin{align*}
+\text{MPG}_i   & \sim \operatorname{Normal}(\mu_i, \sigma) \\
+\mu_i & = \alpha + \beta_1 \text{Horsepower}_i + \beta_2 \text{Displacement}_i + \beta_3 \text{Cylinders} + \beta_4 \text{Transmission}
+\end{align*}
+$$
+
+
+# Modeling  
+
+I will be using `brms` to build my models
+
+#### Data Wrangle
+
+We need to center all the variables, and turn the transmission type to factors. It may be a good idea to explore cylinders as ordinal variables or factors, but this is only for illustrative purposes. 
+
+```{r}
+scale2 <- function(x, na.rm = TRUE) (x - mean(x, na.rm = na.rm)) / sd(x, na.rm)
+
+mtcars <- mtcars %>% 
+  select(mpg, disp, hp, wt, cyl, am) %>% 
+  #scale all cont. varaibles
+  mutate_at(vars(1:5), scale2) %>% 
+  mutate(
+    #Now 1 will be automatic transmission, 2 is manual
+    am = as.factor(am + 1),
+    #cylinder to factor
+    #cyl = as.factor(cyl)
+    )
+```
+
+
+### Model 1
+
+Load relevant packages
+```{r}
+pacman::p_load(brms, cmdstanr)
+```
+
+
+```{r}
+#create formula
+formula1 <- brmsformula(mpg ~ 1 + cyl + hp + disp )
+
+#check priors
+get_prior(formula = formula1, data = mtcars)
+```
+Now I can make my new prior for prior predictive testing
+
+#### Prior Check
+
+```{r cache = TRUE, message=FALSE,  warning=F, results='hide'}
+
+prior1 = c(prior(normal(0, 1), class = b),
+                prior(exponential(1), class = sigma))
+
+
+m1_prior <- brm(formula1, 
+          data = mtcars,
+          prior = prior1,
+          refresh = 0,
+          sample_prior = 'only',
+          iter = 2000, 
+          warmup = 1000, 
+          chains = 4, 
+          cores = 4,
+          #if you want to save your model so it doesn't run each time, do this
+          #file = "ex_mod1_prior",
+          backend = 'cmdstanr',
+          )
+```
+
+Lets check the priors using prior-predictive checks
+
+```{r cache = TRUE}
+pp_check(m1_prior, ndraws = 200) + ggtitle("This seems to be drawing values (light-blue) that are\nVERY far from the original data (dark-blue)!\nBetter narrow those priors!!")
+```
+
+#### Model
+
+```{r results='hide'}
+prior2 = c(prior(normal(0, 0.3), class = b),
+                prior(exponential(4), class = sigma))
+
+
+m1 <- brm(formula1, 
+          data = mtcars,
+          prior = prior2,
+          refresh = 0,
+          iter = 2000, 
+          warmup = 1000, 
+          chains = 4, 
+          cores = 4,
+          backend = 'cmdstanr',
+          file = "ex_mod1")
+```
+
+```{r}
+m1
+```
+Everything looks pretty good! Good convergence, no errors, reasonable error on the estimates. Let's plot just to be sure.
+
+```{r fig.height= 7.5}
+plot(m1, N = 7)
+```
+
+These chains look good, as each of the 4 chains has converged on the same region of parameter space.
+
+#### Alternative model without cylinder
+
+There is a pretty strong correlation between the number of cylinders and the displacement. I wonder if this potential multicollinearity affects the outcome?
+
+I will run a model without cylinder
+```{r results = 'hide'}
+m1.2 <- update(m1, formula. = ~ . - cyl, backend = 'cmdstanr')
+
+m1.2
+```
+
+Interesting, dropping the number of cylinders pushed the **hp** effect a bit more negative, but the error didn't change much for either **hp** or **disp**
+
+Use `loo` to tell us if keeping **cyl** in improves predictive accuracy
+```{r}
+l1 <- loo(m1, m1.2)
+l1$diffs
+```
+Keeping cylinder does improve the prediction, though not in a large way. Since there is a connection between cylinder and displacement, and since there is no negative result from multicollinearity, we will keep it. 
+
+#### Posterior Predictive Check
+
+Check the posterior predictive accuracy of the model
+
+```{r}
+pp_check(m1, ndraws = 200)
+```
+
+This seems ok, not great, but there were no divergent transitions, there were no high pareto-$K$ values in the loo analysis, and the shape fits, then I think it is ok to proceed. 
+
+#### Results & Plotting
+
+Explore some of the results
+
+```{r}
+pacman::p_load(tidybayes)
+```
+
+
+```{r warning = F}
+nd <- tibble(hp = seq(from = -1.5, to = 2.3, length.out = 32),
+             cyl = seq(from = -1.5, to = 2.3, length.out = 32),
+             disp = seq(from = -1.5, to = 2.3, length.out = 32))
+
+```
+
+Plot the displacement
+```{r echo = FALSE}
+fitted(m1,
+       newdata = nd) %>% 
+  data.frame() %>% 
+  bind_cols(nd) %>% 
+  
+  ggplot(aes(x = disp, y = Estimate)) +
+  geom_smooth(aes(ymin = Q2.5, ymax = Q97.5),
+              stat = "identity",
+              fill = "grey50", color = "grey50", alpha = 1/5, linewidth = 1/2) +
+  geom_point(data = mtcars, aes(x = disp, y = mpg, color = cyl, fill = cyl), size = 4, show.legend = FALSE) +
+  scale_fill_viridis_c() +
+  scale_color_viridis_c() +
+  labs(x = "Displacement", 
+       y = "Miles Per Gallon",
+       title = "There is a very strong effect of Dispalcement on Miles per Gallon",
+       subtitle = "Each Cylinder value is a different color") +
+  theme_bw()
+```
+
+
+### Model 2
+
+How does transmission impact the effect of engine size and power on efficiency?
+```{r}
+#create formula
+formula2 <- brmsformula(mpg ~ 0 + cyl + hp + disp + am )
+
+#check priors
+get_prior(formula = formula2, data = mtcars)
+```
+
+#### Prior Check
+```{r cache = TRUE, message=FALSE,  warning=F, results='hide'}
+
+prior2 = c(prior(normal(0, .25), class = b),
+                prior(exponential(4), class = sigma))
+
+
+m2_prior <- brm(formula2, 
+          data = mtcars,
+          prior = prior2,
+          refresh = 0,
+          sample_prior = 'only',
+          iter = 2000, 
+          warmup = 1000, 
+          chains = 4, 
+          cores = 4,
+          #file = "ex_mod2_prior",
+          backend = 'cmdstanr'
+          )
+```
+
+```{r cache = TRUE}
+pp_check(m2_prior, ndraws = 200) + ggtitle("These priors seem well cetered and reasonable, if not regularizing")
+```
+
+#### Model 2
+
+```{r results = 'hide'}
+m2 <- brm(formula2, 
+          data = mtcars,
+          prior = prior2,
+          refresh = 0,
+          iter = 2000, 
+          warmup = 1000, 
+          chains = 4, 
+          cores = 4,
+          #if you want to save your model so it doesn't run each time, do this
+          #file = "ex_mod2",
+          backend = 'cmdstanr'
+          )
+```
+
+```{r}
+m2
+```
+
+The models properly converged, ESS values are high (for 4K iterations), and Rhat values are at 1. 
+
+
+Here we see that the transmission type is important, as manual transmissions have positive values, or high mpg, and automatic transmissions have low values, or low efficiency.
+
+#### Hypothesis testing
+
+Let's test to see if transmissions truly differ in their mpg ratings.
+```{r fig.height= 1.8, echo = FALSE, warning = F}
+posterior_samples(m2) %>% 
+  as.data.frame() %>% 
+  mutate(trans_dif = b_am1 - b_am2) %>% 
+  ggplot(aes(x = trans_dif)) +
+  stat_pointinterval() + 
+  geom_vline(xintercept = 0, linetype = 3) +
+  xlim(-1, 1) +
+  labs(x = "The difference between manual trans. from automatic trans. is definitely non-zero!") +
+  theme_classic()
+  
+```
+
+#### Results & Plotting
+
+Plot the effect of horsepower and displacement on efficiency, visualizing the differences in transmission type
+
+```{r}
+library(patchwork)
+#Patchwork is a wonderful tool for making figures!
+
+p1 <- plot(conditional_effects(m2, effects  = 'disp:am'), plot = F)[[1]] +
+  scale_fill_viridis_d(end = 0.7) +
+  scale_colour_viridis_d(end = 0.7) + 
+  theme(legend.position = "none") + theme_bw()
+p2 <- plot(conditional_effects(m2, effects  = 'hp:am'), plot = F)[[1]] +
+  scale_fill_viridis_d(end = 0.7) +
+  scale_colour_viridis_d(end = 0.7) + theme_bw()
+
+(p1 | p2) + plot_layout(guides = "collect")  +
+  plot_annotation(title = 'The effect of engine size and power on efficiency varies with transmission type.\nManual transmissions (in green) have higher efficiency.',
+    caption = 'Caption here - try changing variable names!')
+```
+
+# Interpretation & Discussion
+
+I have learned a lot about cars today. Surprisingly, Newton's laws of thermodynamics stand up to a merciless onslaught of Bayesian scrutiny. *One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment.*
+
+I found that engine displacement, horsepower, and the number of engine cylinders all have a strong negative effect on efficiency. I also found that, despite the high correlations, keeping both cylinder number and displacement in the model does not result in noticeable multicollinearity, and the model with cylinder number has a higher predictive power, though this difference in minor. *His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls. A collection of textile samples lay spread out on the table - Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.*
+
+The type of transmission affects the efficiency of cars. We see a robust difference between the efficiency of automatic and manual transmissions, though this could be influenced by the fact that there **virtually all vehicles with manual transmission in this dataset are small**, so more detailed investigations are needed to see if this effect is an artifact. *It showed a lady fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather. Drops of rain could be heard hitting the pane, which made him feel quite sad. "How about if I sleep a little bit longer and forget all this nonsense", he thought, but that was something he was unable to do because he was used to sleeping on his right, and in his present state couldn't get into that position.*
+
+```{r}
+sessionInfo()
+```
+

@@ -1,0 +1,17 @@
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+kableExtra
+GGally
+ggdag
+dagitty
+Rcpp
+brms
+cmdstanr
+tidybayes
