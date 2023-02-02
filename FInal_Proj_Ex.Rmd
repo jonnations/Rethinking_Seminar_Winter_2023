@@ -186,7 +186,7 @@ Now I can make my new prior for prior predictive testing
 prior1 = c(prior(normal(0, 1), class = b),
                 prior(exponential(1), class = sigma))
 
-
+#NOTE THE SAMPLE_PRIOR = "ONLY"!! 
 m1_prior <- brm(formula1, 
           data = mtcars,
           prior = prior1,
@@ -245,7 +245,9 @@ There is a pretty strong correlation between the number of cylinders and the dis
 I will run a model without cylinder
 ```{r results = 'hide'}
 m1.2 <- update(m1, formula. = ~ . - cyl, backend = 'cmdstanr')
+```
 
+```{r}
 m1.2
 ```
 
